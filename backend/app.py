@@ -8,6 +8,7 @@ import numpy as np
 from model.feature_extraction import extract_features
 
 app = Flask(__name__)
+CORS(app)
 
 UPLOAD_FOLDER = "uploads"
 if not os.path.exists(UPLOAD_FOLDER):
