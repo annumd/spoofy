@@ -44,12 +44,12 @@
 function analyzeVoice() {
     const fileInput = document.getElementById('audio-file');
     const resultBox = document.getElementById('result-box');
-    
+
     if (!fileInput.files[0]) {
         resultBox.innerHTML = '<p><strong>Result:</strong> Please select an audio file first.</p>';
         return;
     }
-    
+
     resultBox.innerHTML = '<p><strong>Result:</strong> Analyzing...</p>';
 
     const formData = new FormData();
@@ -61,7 +61,7 @@ function analyzeVoice() {
     })
     .then(response => response.json())
     .then(data => {
-        resultBox.innerHTML = <p><strong>Result:</strong> ${data.result}</p>;
+        resultBox.innerHTML = `<p><strong>Result:</strong> ${data.result}</p>`;
     })
     .catch(error => {
         console.error("Error:", error);
