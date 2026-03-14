@@ -19,7 +19,11 @@ def extract_features(file_path):
         # prevent NaN or infinite values
         features = np.nan_to_num(features)
 
+        if len(features) != 59:
+            return np.zeros(59)
+
         return features
+
 
     except Exception as e:
         print("Feature extraction error:", e)
