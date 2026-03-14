@@ -51,13 +51,22 @@ function analyzeVoice() {
     }
     
     resultBox.innerHTML = '<p><strong>Result:</strong> Analyzing...</p>';
-    
-    // Simulate analysis delay
-    setTimeout(() => {
-        const isGenuine = Math.random() > 0.5; // Random for demo
-        const result = isGenuine ? 'Genuine Voice' : 'Spoofed Voice';
-        resultBox.innerHTML = `<p><strong>Result:</strong> ${result}</p>`;
-    }, 2000); // 2 second delay
+
+    const formData = new FormData();
+    formData.append("audio", fileInput.files[0]);
+
+    fetch("https://spoofy-backend-kfvk.onrender.com", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        resultBox.innerHTML = <p><strong>Result:</strong> ${data.result}</p>;
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        resultBox.innerHTML = '<p><strong>Result:</strong> Error connecting to backend.</p>';
+    });
 }
 </script>
 
