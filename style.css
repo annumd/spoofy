@@ -231,3 +231,74 @@ body::before {
     z-index: -1;
     pointer-events: none;
 }
+/* CONTACT PAGE FIX */
+
+.contact-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+    gap:25px;
+}
+
+.contact-box{
+    background:#020617;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 0 20px rgba(56,189,248,0.15);
+    transition:0.3s;
+    text-align:center;
+    word-wrap: break-word;
+}
+
+.contact-box h3{
+    color:#38bdf8;
+    margin-bottom:10px;
+}
+
+.contact-box p{
+    color:#e5e7eb;
+    font-size:15px;
+    line-height:1.5;
+    word-break: break-word;
+}
+
+.contact-box:hover{
+    transform:translateY(-5px);
+    box-shadow:0 0 30px rgba(56,189,248,0.35);
+}
+/* FAQ SECTION */
+
+.faq-section{
+    margin:50px auto;
+    width:70%;
+}
+
+.faq-item{
+    margin-bottom:15px;
+    border-radius:6px;
+    overflow:hidden;
+}
+
+/* question button */
+
+.faq-question{
+    width:100%;
+    padding:16px;
+    cursor:pointer;
+    border:none;
+    font-size:16px;
+    text-align:left;
+    background:#1e293b;
+    color:#ffffff;
+}
+
+/* answer */
+
+.faq-answer{
+    display:none;
+    padding:16px;
+    background:#0f172a;
+    color:#e2e8f0;   /* brighter text */
+    line-height:1.6;
+    border-left:4px solid #38bdf8;
+}
+
