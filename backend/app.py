@@ -21,29 +21,28 @@ model = joblib.load("model/model.pkl")
 def home():
     return "AI Voice Spoof Detection Backend Running!"
 
+
 @app.route("/detect", methods=["POST"])
 def detect():
-    if "audio" not in request.files:
-        return jsonify({"error": "No file uploaded"}), 400
+    try:
+        if "audio" not in request.files:
+            return jsonify({"error": "No file uploaded"}), 400
 
-    file = request.files["audio"]
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-    file.save(file_path)
+        file = request.files["audio"]
+        file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(file_path)
 
-    # 🎯 Extract features from uploaded audio
-    features = extract_features(file_path)
-    features = features.reshape(1, -1)
+        features = extract_features(file_path)
+        features = features.reshape(1, -1)
 
-    # 🎯 Predict using model
-    prediction = model.predict(features)[0]
+        prediction = model.predict(features)[0]
 
-    # convert output to readable text
-    if prediction == 1:
-        result = "Spoofed Voice"
-    else:
-        result = "Genuine Voice"
+        result = "Spoofed Voice" if prediction == 1 else "Genuine Voice"
 
-    return jsonify({"result": result})
+        return jsonify({"result": result})
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
