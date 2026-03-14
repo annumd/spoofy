@@ -48,7 +48,9 @@ def detect():
         result = "Spoofed Voice" if prediction == 1 else "Genuine Voice"
 
         # delete file after processing
-        os.remove(file_path)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
 
         return jsonify({"result": result})
 
