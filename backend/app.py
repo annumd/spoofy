@@ -3,8 +3,9 @@ from flask_cors import CORS
 import os
 import joblib
 import numpy as np
+import uuid
 
-# import your feature extraction
+# import feature extraction
 from model.feature_extraction import extract_features
 
 app = Flask(__name__)
@@ -14,15 +15,13 @@ UPLOAD_FOLDER = "uploads"
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# 🔥 Load trained model once
+# Load trained model
 model = joblib.load("model/model.pkl")
 
 @app.route("/")
 def home():
     return "AI Voice Spoof Detection Backend Running!"
 
-
-@app.route("/detect", methods=["POST"])
 @app.route("/detect", methods=["POST"])
 def detect():
     try:
@@ -30,7 +29,11 @@ def detect():
             return jsonify({"error": "No file uploaded"}), 400
 
         file = request.files["audio"]
-        file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+
+        # generate unique filename
+        filename = str(uuid.uuid4()) + "_" + file.filename
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+
         file.save(file_path)
 
         # extract features
@@ -40,15 +43,16 @@ def detect():
         # predict
         prediction = model.predict(features)[0]
 
-        if prediction == 1:
-            result = "Spoofed Voice"
-        else:
-            result = "Genuine Voice"
+        result = "Spoofed Voice" if prediction == 1 else "Genuine Voice"
+
+        # delete file after processing
+        os.remove(file_path)
 
         return jsonify({"result": result})
 
     except Exception as e:
         print("ERROR:", str(e))
         return jsonify({"error": str(e)})
+
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
