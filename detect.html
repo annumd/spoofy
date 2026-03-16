@@ -30,6 +30,12 @@
 
 <body>
 
+<script>
+if(!localStorage.getItem("loggedInUser")){
+    window.location.href = "login.html";
+}
+</script>
+
 <header>
 <h1>AI Voice Spoof Detection System</h1>
 
@@ -39,6 +45,7 @@
 <a href="howitworks.html">How It Works</a>
 <a href="detect.html">Detect</a>
 <a href="contact.html">Contact</a>
+<a href="#" onclick="logoutUser()">Logout</a>
 </nav>
 
 </header>
@@ -68,7 +75,6 @@ Add Audio File
 <button onclick="analyzeVoice()">Analyze Voice</button>
 
 <div class="result-box" id="result-box" style="margin-top:25px;">
-<!-- empty until audio is added -->
 </div>
 
 </div>
@@ -136,6 +142,11 @@ console.error(error);
 resultBox.innerHTML=`<p><strong>Result:</strong> Backend error occurred</p>`;
 });
 
+}
+
+function logoutUser(){
+localStorage.removeItem("loggedInUser");
+window.location.href = "login.html";
 }
 
 </script>
