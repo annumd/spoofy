@@ -9,6 +9,12 @@
 
 <body>
 
+<script>
+if(!localStorage.getItem("loggedInUser")){
+    window.location.href = "login.html";
+}
+</script>
+
 <header>
 <h1>AI Voice Spoof Detection System</h1>
 
@@ -18,6 +24,7 @@
 <a href="howitworks.html">How It Works</a>
 <a href="detect.html">Detect</a>
 <a href="contact.html">Contact</a>
+<a href="#" onclick="logoutUser()">Logout</a>
 </nav>
 
 </header>
@@ -31,8 +38,8 @@
 
 <p class="intro-text">
 Our AI-based system detects spoofed or fake voice calls using advanced
-machine learning and deep learning techniques. The process involves
-multiple stages from audio input to final classification.
+machine learning techniques. The process involves multiple stages
+from audio input to final classification.
 </p>
 
 <div class="card-container">
@@ -66,11 +73,10 @@ data that the AI model can understand.
 <div class="card">
 <h3>4. Machine Learning Model</h3>
 <p>
-A trained machine learning model analyzes the extracted 
-audio features and identifies patterns that differentiate 
+A trained machine learning model analyzes the extracted
+audio features and identifies patterns that differentiate
 genuine voices from spoofed or AI-generated voices.
 </p>
-
 </div>
 
 <div class="card">
@@ -103,6 +109,14 @@ allowing users to quickly identify suspicious or fraudulent calls.
 <footer>
 © 2026 AI Voice Spoof Detection Project
 </footer>
+
+
+<script>
+function logoutUser(){
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "login.html";
+}
+</script>
 
 </body>
 </html>
