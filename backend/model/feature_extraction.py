@@ -16,17 +16,14 @@ def extract_features(file_path):
 
         features = np.hstack([mfcc_mean, chroma_mean, spectral_mean])
 
-        # prevent NaN or infinite values
-        features = np.hstack([mfcc_mean, chroma_mean, spectral_mean])
-
+        # remove NaN or infinite values
         features = np.nan_to_num(features)
-        
+
+        # ensure fixed size for model
         if len(features) != 59:
             return np.zeros(59)
-        
+
         return features
-
-
 
     except Exception as e:
         print("Feature extraction error:", e)
