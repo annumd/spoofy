@@ -10,18 +10,18 @@
 /* Loading Spinner */
 
 .spinner{
-    width:40px;
-    height:40px;
-    border:4px solid rgba(255,255,255,0.2);
-    border-top:4px solid #38bdf8;
-    border-radius:50%;
-    animation: spin 1s linear infinite;
-    margin:15px auto;
+width:40px;
+height:40px;
+border:4px solid rgba(255,255,255,0.2);
+border-top:4px solid #38bdf8;
+border-radius:50%;
+animation: spin 1s linear infinite;
+margin:15px auto;
 }
 
 @keyframes spin{
-    0%{transform:rotate(0deg);}
-    100%{transform:rotate(360deg);}
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
 }
 
 </style>
@@ -32,7 +32,7 @@
 
 <script>
 if(!localStorage.getItem("loggedInUser")){
-    window.location.href = "login.html";
+window.location.href = "login.html";
 }
 </script>
 
@@ -67,6 +67,7 @@ is genuine or spoofed using our AI model.
 <label for="audio-file" style="display:inline-block;padding:12px 22px;background:#38bdf8;color:white;border-radius:6px;cursor:pointer;margin-bottom:20px;">
 Add Audio File
 </label>
+
 
 <input type="file" id="audio-file" accept=".wav" style="display:none">
 
@@ -123,23 +124,20 @@ body:formData
 })
 
 .then(async response=>{
-    const data = await response.json();
-
-    if(!response.ok){
-        throw new Error(data.error || "Server error");
-    }
-
-    return data;
+if(!response.ok){
+throw new Error("Server error: "+response.status);
+}
+return response.json();
 })
 
 .then(data=>{
-    resultBox.innerHTML=`<p><strong>Result:</strong> ${data.result}</p>`;
+if(data.result){
+resultBox.innerHTML=`<p><strong>Result:</strong> ${data.result}</p>`;
+}else{
+resultBox.innerHTML=`<p><strong>Result:</strong> Unexpected response</p>`;
+}
 })
 
-.catch(error=>{
-    console.error(error);
-    resultBox.innerHTML=`<p><strong>Error:</strong> ${error.message}</p>`;
-});
 .catch(error=>{
 console.error(error);
 resultBox.innerHTML=`<p><strong>Result:</strong> Backend error occurred</p>`;
