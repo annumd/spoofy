@@ -123,20 +123,23 @@ body:formData
 })
 
 .then(async response=>{
-if(!response.ok){
-throw new Error("Server error: "+response.status);
-}
-return response.json();
+    const data = await response.json();
+
+    if(!response.ok){
+        throw new Error(data.error || "Server error");
+    }
+
+    return data;
 })
 
 .then(data=>{
-if(data.result){
-resultBox.innerHTML=`<p><strong>Result:</strong> ${data.result}</p>`;
-}else{
-resultBox.innerHTML=`<p><strong>Result:</strong> Unexpected response</p>`;
-}
+    resultBox.innerHTML=`<p><strong>Result:</strong> ${data.result}</p>`;
 })
 
+.catch(error=>{
+    console.error(error);
+    resultBox.innerHTML=`<p><strong>Error:</strong> ${error.message}</p>`;
+});
 .catch(error=>{
 console.error(error);
 resultBox.innerHTML=`<p><strong>Result:</strong> Backend error occurred</p>`;
