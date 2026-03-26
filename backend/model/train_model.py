@@ -18,6 +18,14 @@ for label in ["real", "spoof"]:
         path = os.path.join(folder, file)
 
         features = extract_features(path)
+        if label == "spoof":
+        # duplicate spoof data to balance dataset
+        for _ in range(5):
+            X.append(features)
+            y.append(1)
+else:
+    X.append(features)
+    y.append(0)
 
         if features is None:
             continue
