@@ -14,12 +14,17 @@ def extract_features(file_path):
         spectral = librosa.feature.spectral_contrast(y=audio, sr=sr)
         spectral_mean = np.mean(spectral.T, axis=0)
 
-        features = np.hstack([mfcc_mean, chroma_mean, spectral_mean])
+        # ✅ New mic-independent features
+        zcr = librosa.feature.zero_crossing_rate(audio)
+        zcr_mean = np.mean(zcr)
 
-        # remove NaN or infinite values
+        rms = librosa.feature.rms(y=audio)
+        rms_mean = np.mean(rms)
+
+        features = np.hstack([mfcc_mean, chroma_mean, spectral_mean, [zcr_mean, rms_mean]])
+
         features = np.nan_to_num(features)
 
-        # ensure fixed size for model
         if np.isnan(features).any():
             return None
 
@@ -27,4 +32,4 @@ def extract_features(file_path):
 
     except Exception as e:
         print("Feature extraction error:", e)
-        return None
+        return None  # ✅ Return None instead of zeros
