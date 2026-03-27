@@ -17,13 +17,20 @@ for label in ["real", "spoof"]:
     for file in os.listdir(folder):
         path = os.path.join(folder, file)
 
+        
+
         features = extract_features(path)
 
         if features is None:
+            print("❌ Failed file:", path)   # <-- ADD THIS LINE
             continue
 
         X.append(features)
         y.append(0 if label == "real" else 1)
+
+print("Total samples used:", len(X))
+print("Real:", sum(1 for i in y if i == 0))
+print("Spoof:", sum(1 for i in y if i == 1))
 
 X = np.array(X)
 y = np.array(y)
