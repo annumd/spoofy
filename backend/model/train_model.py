@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 import joblib
 from feature_extraction import extract_features
 
-DATASET_PATH = "dataset"
+DATASET_PATH = "../dataset"
 
 X = []
 y = []
@@ -28,10 +28,11 @@ for label in ["real", "spoof"]:
 X = np.array(X)
 y = np.array(y)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y
+)
 
-model = RandomForestClassifier(n_estimators=100)
-
+model = RandomForestClassifier(n_estimators=200, class_weight='balanced')
 model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)
