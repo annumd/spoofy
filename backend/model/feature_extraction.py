@@ -3,9 +3,9 @@ import numpy as np
 
 def extract_features(file_path):
     try:
-        audio, sr = librosa.load(file_path, sr=16000, mono=True, duration=5)
+        audio, sr = librosa.load(file_path, sr=16000, mono=True)
 
-        mfcc = librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=20)
+        mfcc = librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=40)
         mfcc_mean = np.mean(mfcc.T, axis=0)
 
         chroma = librosa.feature.chroma_stft(y=audio, sr=sr)
@@ -20,11 +20,11 @@ def extract_features(file_path):
         features = np.nan_to_num(features)
 
         # ensure fixed size for model
-        if len(features) != 59:
-            return np.zeros(59)
+        if np.isnan(features).any():
+            return None
 
         return features
 
     except Exception as e:
         print("Feature extraction error:", e)
-        return np.zeros(59)
+        return None
