@@ -13,11 +13,15 @@ UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 model = joblib.load(os.path.join(os.getcwd(), "model", "model.pkl"))
-scaler = joblib.load(os.path.join(os.getcwd(), "model", "scaler.pkl"))  # ✅ Load scaler
+scaler = joblib.load(os.path.join(os.getcwd(), "model", "scaler.pkl"))
 
 @app.route("/")
 def home():
     return "AI Voice Spoof Detection Backend Running!"
+
+@app.route("/ping")
+def ping():
+    return "pong"
 
 @app.route("/detect", methods=["POST"])
 def detect():
@@ -44,14 +48,18 @@ def detect():
             return jsonify({"error": "Could not extract features from audio"}), 400
 
         features = np.array(features).reshape(1, -1)
-        features = scaler.transform(features)  # ✅ Apply scaler before predicting
+        features = scaler.transform(features)
         prediction = model.predict(features)[0]
+        
+        # ✅ Confidence added
+        confidence = round(float(model.predict_proba(features)[0][prediction] * 100), 2)
         result = "Spoofed Voice" if prediction == 1 else "Genuine Voice"
 
         if os.path.exists(file_path):
             os.remove(file_path)
 
-        return jsonify({"result": result})
+        # ✅ Confidence returned
+        return jsonify({"result": result, "confidence": confidence})
 
     except Exception as e:
         print("ERROR:", str(e))
